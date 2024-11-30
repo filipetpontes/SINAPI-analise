@@ -98,4 +98,6 @@ def verifica_meses(caminho):
         
         mes_ano = f"{data_ref[4:]}/{data_ref[:4]}"
         meses.append(mes_ano)
-    return meses
+
+    meses_ordenados = sorted(meses, key=lambda x: (int(x.split('/')[1]), int(x.split('/')[0])))
+    return meses_ordenados
