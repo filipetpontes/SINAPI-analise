@@ -41,20 +41,18 @@ with col1:
         value=st.session_state["codigo"],
         key="codigo"
     )
-    if st.button("Detalhar"):
-        st.session_state["mostrar_detalhes"] = True
+    
 with col2:
     datas_disponiveis = verifica_meses(caminho_csvs_analitico)
     data_selecionada = st.selectbox("Tabela SINAPI:", options=datas_disponiveis)
     mes, ano = data_selecionada.split('/')
-   
-    
 
 with col3:
     desoneracao = st.selectbox("Desoneração:", options=['Desonerado'])
     if desoneracao == 'Não Desonerado':
         desoneracao = 'NaoDesonerado'
-
+if st.button("Detalhar"):
+        st.session_state["mostrar_detalhes"] = True
 # Exibição dos detalhes
 if st.session_state["mostrar_detalhes"]:
     if st.session_state["codigo"]:
