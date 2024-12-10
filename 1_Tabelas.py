@@ -164,9 +164,10 @@ if st.session_state["df"] is not None:
             st.write("Iniciando botao")
             codigo = grid_response['selected_rows']['Código'].iloc[0]
             st.session_state["codigo"] = codigo
-            st.switch_page("pages/2_Detalhamento.py")
             time.sleep(5)
             st.write("Finalizando botao")
+            st.switch_page("pages/2_Detalhamento.py")
+            
 
  
 
