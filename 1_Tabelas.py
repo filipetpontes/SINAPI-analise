@@ -164,15 +164,12 @@ if st.session_state["df"] is not None:
         update_mode='MODEL_CHANGED'
     )
     st.write(st.session_state)
-    if grid_response['selected_rows'] is not None:
-        codigo = grid_response['selected_rows']['Código'].iloc[0]
-        st.write(codigo)
-        # st.session_state["codigo"] = codigo
 
     if st.button("Detalhar"):
         if grid_response['selected_rows'] is not None:
             # st.session_state["codigo"] = codigo
-
+            codigo = grid_response['selected_rows']['Código'].iloc[0]
+            st.write(codigo)
             set_query_params({"codigo": codigo})
             st.switch_page("pages/2_Detalhamento.py")
             
