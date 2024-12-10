@@ -162,12 +162,8 @@ if st.session_state["df"] is not None:
         if grid_response['selected_rows'] is not None:
             codigo = grid_response['selected_rows']['Código'].iloc[0]
             st.session_state["codigo"] = codigo
-        # st.query_params = {"page": "2_Detalhamento", 
-        #                    "codigo": codigo, "estado": st.session_state["estado"], 
-        #                    "estado": st.session_state["estado"], 
-        #                    "desoneracao": st.session_state["desoneracao"]}
-        
-        st.switch_page("pages/2_Detalhamento.py")
+            st.session_state["mostrar_detalhes"] = True
+            st.switch_page("pages/2_Detalhamento.py")
 
  
 
