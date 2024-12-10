@@ -50,7 +50,7 @@ if "page" in st.session_state and st.session_state["page"] == "2_Detalhamento":
     else:
         st.session_state["page"] = "1_Tabelas"  # Reseta para a página principal
 
-
+st.write("OPA")
 # Função para redefinir a palavra-chave quando os dropdowns mudarem
 def reset_palavra_chave():
     st.session_state["palavra_chave"] = ""
@@ -161,11 +161,8 @@ if st.session_state["df"] is not None:
 
     if st.button("Detalhar"):
         if grid_response['selected_rows'] is not None:
-            st.write("Iniciando botao")
             codigo = grid_response['selected_rows']['Código'].iloc[0]
             st.session_state["codigo"] = codigo
-            time.sleep(5)
-            st.write("Finalizando botao")
             st.switch_page("pages/2_Detalhamento.py")
             
 
