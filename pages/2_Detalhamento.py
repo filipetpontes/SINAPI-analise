@@ -44,7 +44,7 @@ with col1:
     
 with col2:
     datas_disponiveis = verifica_meses(caminho_csvs_analitico)
-    data_selecionada = st.selectbox("Tabela SINAPI:", options=datas_disponiveis)
+    data_selecionada = st.selectbox("Tabela SINAPI:", options=datas_disponiveis, key="data_selecionada")
     mes, ano = data_selecionada.split('/')
 
 with col3:
@@ -62,7 +62,7 @@ if st.session_state["mostrar_detalhes"]:
         
         # Obtendo as informações e o gráfico
         informacoes, fig, itens, historico = detalha_composicao(arquivo_csv, st.session_state["codigo"])
-        
+
         if informacoes is None:  # Código não encontrado
             st.warning(f"Código **{st.session_state['codigo']}** não encontrado na tabela selecionada.")
         else:
@@ -100,6 +100,16 @@ if st.session_state["mostrar_detalhes"]:
             st.markdown("---")
             st.markdown("<h4 style='color: #f37421;'>Histórico de Preços</h4>", unsafe_allow_html=True)
             st.write(historico)
+
+            # Ler os parâmetros da URL
+            query_params = st.query_params
+            codigo = query_params.get("codigo", "")
+            data = query_params.get("data", "")
+            st.write(data)
+            # Validar o código selecionado
+            if codigo:
+                # st.session_state["codigo"] = codigo
+                st.session_state["mostrar_detalhes"] = True
             
     else:
         st.warning("Por favor, insira um código válido.")
