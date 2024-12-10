@@ -1,7 +1,9 @@
 import pandas as pd
 import plotly.express as px
 import os
+import streamlit as st
 
+@st.cache_data
 def sinapi_leitura_csv(caminho_csv):
     
     df = pd.read_csv(caminho_csv, sep=';', dtype='str')
@@ -90,6 +92,7 @@ def detalha_composicao(caminho_csv, codigo):
     historico = historico_preco('BASE/Sintético', codigo)
     return informacoes, fig, itens, historico
 
+@st.cache_data
 def verifica_meses(caminho):
     meses = []
     arquivos_csv = [os.path.join(caminho, f) for f in os.listdir(caminho) if f.endswith('.csv')]
