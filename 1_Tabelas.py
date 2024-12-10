@@ -82,7 +82,7 @@ if st.button("Exibir"):
         st.session_state["df"] = df[['DESCRICAO DA CLASSE', 'DESCRICAO DO TIPO 1', 'CODIGO  DA COMPOSICAO', 'DESCRICAO DA COMPOSICAO', 'UNIDADE', 'CUSTO TOTAL']]  # Armazenar o DataFrame no session_state
     except Exception as e:
         st.error(f"Erro ao processar o arquivo: {e}")
-st.write("OPA1")
+
 # Exibição do DataFrame e Filtros
 if st.session_state["df"] is not None:
     # Filtro por Descrição da Classe e Tipo (lado a lado)
@@ -157,8 +157,9 @@ if st.session_state["df"] is not None:
         allow_unsafe_jscode=True,
         update_mode='MODEL_CHANGED'
     )
-    st.write("OPA2")
+
     if st.button("Detalhar"):
+        st.write("OPA1")
         if grid_response['selected_rows'] is not None:
             codigo = grid_response['selected_rows']['Código'].iloc[0]
             st.session_state["codigo"] = codigo
