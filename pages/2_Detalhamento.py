@@ -72,7 +72,6 @@ if st.session_state["mostrar_detalhes"]:
             st.write(f"**Descrição:** {informacoes['DESCRICAO DA COMPOSICAO']}")
             st.write(f"**Referência:** {estado_selecionado} - {data_selecionada}")
             st.write(f"**Valor:** R$ {informacoes['CUSTO TOTAL']}")
-            # st.write(itens)
 
             # Configurar Ag-Grid
             gb = GridOptionsBuilder.from_dataframe(itens)
@@ -82,7 +81,6 @@ if st.session_state["mostrar_detalhes"]:
             gb.configure_column("Unidade", maxWidth=70)
             gb.configure_column("Coeficiente", maxWidth=85)
             gb.configure_column("Preço Unitário", maxWidth=100)
-            gb.configure_selection('single')  # Permite seleção de uma linha
             grid_options = gb.build()
 
             # Renderizar com Ag-Grid
@@ -100,16 +98,6 @@ if st.session_state["mostrar_detalhes"]:
             st.markdown("---")
             st.markdown("<h4 style='color: #f37421;'>Histórico de Preços</h4>", unsafe_allow_html=True)
             st.write(historico)
-
-            # Ler os parâmetros da URL
-            query_params = st.query_params
-            codigo = query_params.get("codigo", "")
-            data = query_params.get("data", "")
-            st.write(data)
-            # Validar o código selecionado
-            if codigo:
-                # st.session_state["codigo"] = codigo
-                st.session_state["mostrar_detalhes"] = True
             
     else:
         st.warning("Por favor, insira um código válido.")
