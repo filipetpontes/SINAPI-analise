@@ -160,9 +160,11 @@ if st.session_state["df"] is not None:
 
     if st.button("Detalhar"):
         if grid_response['selected_rows'] is not None:
+            st.write("Iniciando botao")
             codigo = grid_response['selected_rows']['Código'].iloc[0]
             st.session_state["codigo"] = codigo
             st.switch_page("pages/2_Detalhamento.py")
+            st.write("Finalizando botao")
 
  
 
