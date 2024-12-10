@@ -2,7 +2,13 @@ import streamlit as st
 import pandas as pd
 from functions import sinapi_leitura_csv, verifica_meses
 from st_aggrid import AgGrid, GridOptionsBuilder
-import time
+from streamlit.runtime.scriptrunner import RerunData, RerunException
+from urllib.parse import urlencode
+
+def set_query_params(params):
+    query_string = urlencode(params)
+    st.markdown(f'<meta http-equiv="refresh" content="0; url=Detalhamento?{query_string}">', unsafe_allow_html=True)
+    st.stop()
 
 caminho_csvs_sintetico = 'BASE/Sintético'
 caminho_csvs_analitico = 'BASE/Analítico'
@@ -165,7 +171,9 @@ if st.session_state["df"] is not None:
 
     if st.button("Detalhar"):
         if grid_response['selected_rows'] is not None:
-            st.session_state["codigo"] = codigo
+            # st.session_state["codigo"] = codigo
+
+            set_query_params({"codigo": codigo})
             st.switch_page("pages/2_Detalhamento.py")
             
 
