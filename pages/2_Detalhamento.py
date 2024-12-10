@@ -4,6 +4,8 @@ import plotly.express as px
 from st_aggrid import AgGrid, GridOptionsBuilder
 from functions import detalha_composicao, verifica_meses
 
+
+
 caminho_csvs_sintetico = 'BASE/Sintético'
 caminho_csvs_analitico = 'BASE/Analítico'
 
@@ -22,6 +24,14 @@ st.markdown(
 
 imagem = "marca_cesar_school.png"
 st.sidebar.image(imagem, use_container_width=False, width=150)
+
+query_params = st.query_params
+codigo = query_params.get("codigo", [None])
+
+if codigo:
+    st.write(f"Código recebido: {codigo}")
+else:
+    st.warning("Nenhum código foi passado na URL.")
 
 # Inicialização do estado
 if "codigo" not in st.session_state:
