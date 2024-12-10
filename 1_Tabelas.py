@@ -143,7 +143,7 @@ if st.session_state["df"] is not None:
     gb.configure_column("Descrição da Composição", wrapText=True, autoHeight=True, maxWidth=650)  # Limitar largura máxima
     gb.configure_column("Unidade", maxWidth=90)  # Manter Unidade visível
     gb.configure_column("Valor", maxWidth=100)  # Manter Valor visível
-    gb.configure_selection('single', use_checkbox=False)
+    gb.configure_selection('single', use_checkbox=True)
 
     grid_options = gb.build()
 
