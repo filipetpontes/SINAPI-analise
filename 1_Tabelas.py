@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from functions import sinapi_leitura_csv, verifica_meses
 from st_aggrid import AgGrid, GridOptionsBuilder
+import time
 
 caminho_csvs_sintetico = 'BASE/Sintético'
 caminho_csvs_analitico = 'BASE/Analítico'
@@ -164,6 +165,7 @@ if st.session_state["df"] is not None:
             codigo = grid_response['selected_rows']['Código'].iloc[0]
             st.session_state["codigo"] = codigo
             st.switch_page("pages/2_Detalhamento.py")
+            time.sleep(5)
             st.write("Finalizando botao")
 
  
