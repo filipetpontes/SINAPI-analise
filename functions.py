@@ -33,7 +33,7 @@ def historico_preco(caminho_csvs, codigo_composicao):
             filtered_chunk = chunk[chunk['CODIGO  DA COMPOSICAO'] == codigo_composicao]
             if not filtered_chunk.empty:
                 custo_total = filtered_chunk['CUSTO TOTAL'].iloc[0]
-                dados_variacao.append({'Data': mes_ano, 'Custo Total': float(custo_total.replace(',', '.'))})
+                dados_variacao.append({'Data': mes_ano, 'Custo Total': float(custo_total.replace('.', '').replace(',', '.'))})
                 break
 
     if dados_variacao:

@@ -39,6 +39,17 @@ if "descricao_classe" not in st.session_state:
 if "descricao_tipo_1" not in st.session_state:
     st.session_state["descricao_tipo_1"] = "Todos"
 
+# Redirecionar para a página correta baseado no session_state
+if "page" in st.session_state and st.session_state["page"] == "2_Detalhamento":
+    # Evita múltiplos redirecionamentos
+    if "redirecionado" not in st.session_state or not st.session_state["redirecionado"]:
+        st.session_state["redirecionado"] = True  # Marca como redirecionado
+        st.query_params = {"page": "2_Detalhamento", "codigo": st.session_state.get("codigo", "")}
+        st.stop()  # Para evitar que o restante do código no 1_Tabelas.py seja executado
+    else:
+        st.session_state["page"] = "1_Tabelas"  # Reseta para a página principal
+
+
 # Função para redefinir a palavra-chave quando os dropdowns mudarem
 def reset_palavra_chave():
     st.session_state["palavra_chave"] = ""
@@ -48,15 +59,18 @@ col1, col2, col3 = st.columns(3)
 
 with col1:
     estado_selecionado = st.selectbox("Estado:", options=['PE'])
+    st.session_state["estado"] = estado_selecionado
 
 with col2:
     datas_disponiveis = verifica_meses(caminho_csvs_analitico)
 
     data_selecionada = st.selectbox("Tabela SINAPI:", options=datas_disponiveis)
+    st.session_state.data_selecionada = data_selecionada
     mes, ano = data_selecionada.split('/')
 
 with col3:
     desoneracao = st.selectbox("Desoneração:", options=['Desonerado'])
+    st.session_state["desoneracao"] = desoneracao
     if desoneracao == 'Não Desonerado':
         desoneracao = 'NaoDesonerado'
 
@@ -129,6 +143,7 @@ if st.session_state["df"] is not None:
     gb.configure_column("Descrição da Composição", wrapText=True, autoHeight=True, maxWidth=650)  # Limitar largura máxima
     gb.configure_column("Unidade", maxWidth=90)  # Manter Unidade visível
     gb.configure_column("Valor", maxWidth=100)  # Manter Valor visível
+    gb.configure_selection('single', use_checkbox=True)
 
     grid_options = gb.build()
 
@@ -136,14 +151,25 @@ if st.session_state["df"] is not None:
     grid_response = AgGrid(
         df_exibicao,
         gridOptions=grid_options,
-        fit_columns_on_grid_load=False,  # Evita que ajuste automático esconda colunas
+        height=700,
+        fit_columns_on_grid_load=False,
         enable_enterprise_modules=False,
         allow_unsafe_jscode=True,
         update_mode='MODEL_CHANGED'
     )
 
-    # Capturar o código da linha selecionada
-    if grid_response['selected_rows']:
-        codigo_selecionado = grid_response['selected_rows'][0]['Código']
-        st.experimental_set_query_params(page="2_Dashboard", codigo=codigo_selecionado)
-        st.experimental_rerun()  # Redirecionar para outra página
+    if st.button("Detalhar"):
+        if grid_response['selected_rows'] is not None:
+            codigo = grid_response['selected_rows']['Código'].iloc[0]
+            st.session_state["codigo"] = codigo
+            st.session_state["page"] = "2_Detalhamento"
+        st.query_params = {"page": "2_Detalhamento", 
+                           "codigo": codigo, "estado": st.session_state["estado"], 
+                           "estado": st.session_state["estado"], 
+                           "desoneracao": st.session_state["desoneracao"]}
+        
+        st.switch_page("pages/2_Detalhamento.py")
+
+ 
+
+
