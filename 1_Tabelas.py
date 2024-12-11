@@ -152,6 +152,12 @@ if st.session_state["df"] is not None:
     
     st.write(st.session_state)
 
+    if st.button("Detalhar"):
+        if len(selecao["selection"]["rows"]) > 0:
+            codigo = df_exibicao.iloc[selecao["selection"]["rows"][0]]["Código"]
+            st.session_state["codigo"] = codigo
+            st.switch_page("pages/2_Detalhamento.py")
+
     # # Configurar Ag-Grid
     # gb = GridOptionsBuilder.from_dataframe(df_exibicao)
     # gb.configure_column("Descrição da Composição", wrapText=True, autoHeight=True, maxWidth=650)  # Limitar largura máxima
