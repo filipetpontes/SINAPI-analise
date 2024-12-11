@@ -148,44 +148,14 @@ if st.session_state["df"] is not None:
     if len(selecao["selection"]["rows"]) > 0:
         codigo = df_exibicao.iloc[selecao["selection"]["rows"][0]]["Código"]
         st.session_state["codigo"] = codigo
+        
     arquivo_csv = f'{caminho_csvs_analitico}/SINAPI_Custo_Ref_Composicoes_Analitico_{estado_selecionado}_{ano}{mes}_{desoneracao}.csv'
-    
-    st.write(st.session_state)
 
     if st.button("Detalhar"):
         if len(selecao["selection"]["rows"]) > 0:
             codigo = df_exibicao.iloc[selecao["selection"]["rows"][0]]["Código"]
             st.session_state["codigo"] = codigo
             st.switch_page("pages/2_Detalhamento.py")
-
-    # # Configurar Ag-Grid
-    # gb = GridOptionsBuilder.from_dataframe(df_exibicao)
-    # gb.configure_column("Descrição da Composição", wrapText=True, autoHeight=True, maxWidth=650)  # Limitar largura máxima
-    # gb.configure_column("Unidade", maxWidth=90)  # Manter Unidade visível
-    # gb.configure_column("Valor", maxWidth=100)  # Manter Valor visível
-    # gb.configure_selection('single', use_checkbox=True)
-
-    # grid_options = gb.build()
-
-    # # Renderizar com Ag-Grid
-    # grid_response = AgGrid(
-    #     df_exibicao,
-    #     gridOptions=grid_options,
-    #     height=500,
-    #     fit_columns_on_grid_load=False,
-    #     enable_enterprise_modules=False,
-    #     allow_unsafe_jscode=True,
-    #     update_mode='MODEL_CHANGED'
-    # )
-    # st.write(st.session_state)
-    # if grid_response['selected_rows'] is not None:
-    #     codigo = grid_response['selected_rows']['Código'].iloc[0]
-    #     st.session_state["codigo"] = codigo
-
-    # if st.button("Detalhar"):
-    #     if grid_response['selected_rows'] is not None:
-    #         st.session_state["codigo"] = codigo
-    #         st.switch_page("pages/2_Detalhamento.py")
             
 
  
