@@ -16,7 +16,7 @@ st.markdown(
 )
 
 texto = """
-    <p style="text-align: justify;">
+    <p style="text-align: justify;font-size: 22px;">
     Este é um projeto desenvolvido por <strong>Filipe Pontes</strong> como Trabalho de Conclusão de Curso da Pós-Graduação em <strong>Engenharia e Análise de Dados</strong> na <strong>CESAR School</strong>, turma 2023.1.
     </p>
     """
