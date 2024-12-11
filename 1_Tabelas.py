@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
-from functions import sinapi_leitura_csv, verifica_meses
-from st_aggrid import AgGrid, GridOptionsBuilder
+from functions import sinapi_leitura_csv, verifica_meses, detalha_composicao
 
 caminho_csvs_sintetico = 'BASE/Sintético'
 caminho_csvs_analitico = 'BASE/Analítico'
@@ -101,30 +100,33 @@ if st.session_state["df"] is not None:
         }
     )
 
-    # Configurar Ag-Grid
-    gb = GridOptionsBuilder.from_dataframe(df_exibicao)
-    gb.configure_column("Descrição da Composição", wrapText=True, autoHeight=True, maxWidth=650)
-    gb.configure_column("Unidade", maxWidth=90)
-    gb.configure_column("Valor", maxWidth=100)
-    gb.configure_selection('single', use_checkbox=True)
+    selecao = st.dataframe(
+                df_exibicao,
+                hide_index=True,
+                selection_mode="single-row",
+                on_select="rerun"
+                )
 
-    grid_options = gb.build()
+    codigo = df_exibicao.iloc[selecao["selection"]["rows"][0]]["Código"]
+    arquivo_csv = f'{caminho_csvs_analitico}/SINAPI_Custo_Ref_Composicoes_Analitico_{estado_selecionado}_{ano}{mes}_{desoneracao}.csv'
 
-    # Renderizar com Ag-Grid
-    grid_response = AgGrid(
-        df_exibicao,
-        gridOptions=grid_options,
-        height=500,
-        fit_columns_on_grid_load=False,
-        enable_enterprise_modules=False,
-        allow_unsafe_jscode=True,
-        update_mode='MODEL_CHANGED'
-    )
+    informacoes, fig, itens, historico = detalha_composicao(arquivo_csv, codigo)
 
-    if grid_response['selected_rows'] is not None:
-        codigo = grid_response['selected_rows']['Código'].iloc[0]
-        st.write(codigo)
+    st.markdown("---")
+    st.markdown("<h4 style='color: #f37421;'>Detalhes da Composição</h4>", unsafe_allow_html=True)
 
-    if st.button("Detalhar"):
-        if codigo:
-            st.write(f"Detalhando o código: {codigo}")
+    if informacoes is None:
+        st.warning(f"Código **{codigo}** não encontrado na tabela selecionada.")
+    else:
+        st.write(f"**Código:** {codigo}")
+        st.write(f"**Classe:** {informacoes['DESCRICAO DA CLASSE']}")
+        st.write(f"**Tipo:** {informacoes['DESCRICAO DO TIPO 1']}")
+        st.write(f"**Descrição:** {informacoes['DESCRICAO DA COMPOSICAO']}")
+        st.write(f"**Referência:** {estado_selecionado} - {data_selecionada}")
+        st.write(f"**Valor:** R$ {informacoes['CUSTO TOTAL']}")
+    st.markdown("---")
+    st.markdown("<h4 style='color: #f37421;'>Distribuição dos Valores</h4>", unsafe_allow_html=True)
+    st.plotly_chart(fig)
+    st.markdown("---")
+    st.markdown("<h4 style='color: #f37421;'>Histórico de Preços</h4>", unsafe_allow_html=True)
+    st.write(historico)
