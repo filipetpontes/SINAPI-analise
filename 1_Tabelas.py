@@ -116,12 +116,24 @@ if st.session_state["df"] is not None:
     if descricao_tipo_1_selecionada != "Todos":
         df_filtrado = df_filtrado[df_filtrado['DESCRICAO DO TIPO 1'] == descricao_tipo_1_selecionada]
 
-    palavra_chave = st.text_input(
-        "Digite uma palavra-chave:",
-        value=st.session_state["palavra_chave"],
-        key="input_palavra_chave"
-    )
+    with col1:
+        codigo_filtro = st.text_input("Código:", key="filtro_codigo")
 
+    if codigo_filtro:
+        df_filtrado = df_filtrado[df_filtrado['CODIGO  DA COMPOSICAO'].str.contains(codigo_filtro, case=False, na=False)]
+
+    with col2:
+        palavra_chave = st.text_input(
+            "Palavra-chave:",
+            value=st.session_state["palavra_chave"],
+            key="input_palavra_chave"
+        )
+    with st.expander("Dúvidas❓"):
+        st.markdown("""
+        - **Passo 1**: Selecione uma composição na tabela abaixo, basta selecionar o checkbox na primeira coluna.
+        - **Passo 2**: Clique no botão "Detalhar".
+        """)
+    
     if palavra_chave:
         df_filtrado = df_filtrado[df_filtrado['DESCRICAO DA COMPOSICAO'].str.contains(palavra_chave, case=False, na=False)]
 
@@ -143,22 +155,12 @@ if st.session_state["df"] is not None:
                 hide_index=True,
                 selection_mode="single-row",
                 on_select="rerun"
-                )
-
-    if len(selecao["selection"]["rows"]) > 0:
-        codigo = df_exibicao.iloc[selecao["selection"]["rows"][0]]["Código"]
-        st.session_state["codigo"] = codigo
-
-    arquivo_csv = f'{caminho_csvs_analitico}/SINAPI_Custo_Ref_Composicoes_Analitico_{estado_selecionado}_{ano}{mes}_{desoneracao}.csv'
-
+                )   
+        
     if st.button("Detalhar"):
         if len(selecao["selection"]["rows"]) > 0:
             codigo = df_exibicao.iloc[selecao["selection"]["rows"][0]]["Código"]
             st.session_state["codigo"] = codigo
             st.session_state["mostrar_detalhes"] = True
             st.switch_page("pages/2_Detalhamento.py")
-            
-
- 
-
-
+    
