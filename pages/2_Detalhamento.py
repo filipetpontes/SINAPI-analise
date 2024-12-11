@@ -1,7 +1,4 @@
 import streamlit as st
-import pandas as pd
-import plotly.express as px
-from st_aggrid import AgGrid, GridOptionsBuilder
 from functions import detalha_composicao, verifica_meses
 
 caminho_csvs_sintetico = 'BASE/Sintético'
@@ -66,32 +63,24 @@ if st.session_state["mostrar_detalhes"]:
         if informacoes is None:  # Código não encontrado
             st.warning(f"Código **{st.session_state['codigo']}** não encontrado na tabela selecionada.")
         else:
-            st.write(f"**Código:** {st.session_state['codigo']}")
+
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.metric(label='Código', value=st.session_state['codigo'])
+            with col2:
+                st.metric(label='Referência', value=f"{data_selecionada} - {estado_selecionado}")
+            with col3:
+                st.metric(label='Valor', value=f"R$ {informacoes['CUSTO TOTAL']}")
+
             st.write(f"**Classe:** {informacoes['DESCRICAO DA CLASSE']}")
             st.write(f"**Tipo:** {informacoes['DESCRICAO DO TIPO 1']}")
             st.write(f"**Descrição:** {informacoes['DESCRICAO DA COMPOSICAO']}")
-            st.write(f"**Referência:** {estado_selecionado} - {data_selecionada}")
-            st.write(f"**Valor:** R$ {informacoes['CUSTO TOTAL']}")
 
-            # Configurar Ag-Grid
-            gb = GridOptionsBuilder.from_dataframe(itens)
-            gb.configure_column("Descrição", wrapText=True, autoHeight=True, maxWidth=400)  # Limitar largura máxima
-            gb.configure_column("Tipo", maxWidth=105)
-            gb.configure_column("Código", maxWidth=70)
-            gb.configure_column("Unidade", maxWidth=70)
-            gb.configure_column("Coeficiente", maxWidth=85)
-            gb.configure_column("Preço Unitário", maxWidth=100)
-            grid_options = gb.build()
+            st.dataframe(
+                        itens,
+                        hide_index=True
+                        )
 
-            # Renderizar com Ag-Grid
-            grid_response = AgGrid(
-                itens,
-                gridOptions=grid_options,
-                fit_columns_on_grid_load=False,  # Evita que ajuste automático esconda colunas
-                enable_enterprise_modules=False,
-                allow_unsafe_jscode=True,
-                update_mode='MODEL_CHANGED'
-            )
             st.markdown("---")
             st.markdown("<h4 style='color: #f37421;'>Distribuição dos Valores</h4>", unsafe_allow_html=True)
             st.plotly_chart(fig)
