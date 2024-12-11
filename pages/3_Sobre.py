@@ -1,7 +1,7 @@
 import streamlit as st
 
 st.set_page_config(
-     page_title="CamVote - Sobre",
+     page_title="Sobre",
      page_icon="📝",
      layout="wide",
      initial_sidebar_state="expanded",
@@ -10,7 +10,10 @@ st.set_page_config(
 imagem = "marca_cesar_school.png"
 st.sidebar.image(imagem, use_container_width=False, width=100)
 
-st.header("📝 Sobre")
+st.markdown(
+    "<h2 style='text-align: left; color: #f37421;'>Sobre</h2>",
+    unsafe_allow_html=True
+)
 
 texto = """
     <p style="text-align: justify;">
