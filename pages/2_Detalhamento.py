@@ -7,7 +7,7 @@ caminho_csvs_analitico = 'BASE/Analítico'
 # Configuração da página
 st.set_page_config(
     page_title="Análise SINAPI",
-    page_icon="🏠",
+    page_icon="📈",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -18,7 +18,7 @@ st.markdown(
 )
 
 imagem = "marca_cesar_school.png"
-st.sidebar.image(imagem, use_container_width=False, width=150)
+st.sidebar.image(imagem, use_container_width=False, width=125)
 
 # Inicialização do estado
 if "codigo" not in st.session_state:
