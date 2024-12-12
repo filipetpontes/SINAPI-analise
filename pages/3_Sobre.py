@@ -8,7 +8,7 @@ st.set_page_config(
 )
 
 imagem = "marca_cesar_school.png"
-st.sidebar.image(imagem, use_container_width=False, width=140)
+st.sidebar.image(imagem, use_container_width=False, width=130)
 
 st.markdown(
     "<h2 style='text-align: left; color: #f37421;'>Sobre</h2>",
