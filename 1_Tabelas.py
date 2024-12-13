@@ -1,12 +1,10 @@
 import streamlit as st
 import pandas as pd
-from functions import sinapi_leitura_csv, verifica_meses
-from st_aggrid import AgGrid, GridOptionsBuilder
-import time
+from functions import sinapi_leitura_csv, verifica_meses, detalha_composicao
 
-caminho_csvs_sintetico = 'BASE/Sintético'
-caminho_csvs_analitico = 'BASE/Analítico'
-
+# caminho_csvs_sintetico = 'BASE/Sintético'
+# caminho_csvs_analitico = 'BASE/Analítico'
+caminho_base = 'BASE'
 # Configuração da página
 st.set_page_config(
     page_title="Análise SINAPI",
@@ -62,17 +60,21 @@ with col1:
     st.session_state["estado"] = estado_selecionado
 
 with col2:
+    desoneracao = st.selectbox("Desoneração:", options=['Desonerado', 'Não Desonerado'])
+    st.session_state.desoneracao = desoneracao
+
+    caminho_csvs_sintetico = f'{caminho_base}/{desoneracao}/Sintético'
+    caminho_csvs_analitico = f'{caminho_base}/{desoneracao}/Analítico'
+
+    if desoneracao == 'Não Desonerado':
+        desoneracao = 'NaoDesonerado'
+
+with col3:
     datas_disponiveis = verifica_meses(caminho_csvs_analitico)
 
     data_selecionada = st.selectbox("Tabela SINAPI:", options=datas_disponiveis)
     st.session_state.data_selecionada = data_selecionada
     mes, ano = data_selecionada.split('/')
-
-with col3:
-    desoneracao = st.selectbox("Desoneração:", options=['Desonerado'])
-    st.session_state["desoneracao"] = desoneracao
-    if desoneracao == 'Não Desonerado':
-        desoneracao = 'NaoDesonerado'
 
 # Botão para exibir o DataFrame
 if st.button("Exibir"):
