@@ -51,9 +51,14 @@ def historico_preco(caminho_csvs, codigo_composicao):
             markers=True
         )
         fig.update_yaxes(tickformat=".2f")
+
+        fig.update_layout(
+            dragmode=False,
+            modebar_remove=['zoom', 'pan', 'select']
+        )
         return fig, df_variacao['Custo Total'].tolist()
     else:
-        return pd.DataFrame()  # Retorna vazio se não houver dados
+        return pd.DataFrame()
 
 def historico_coeficiente(caminho_csvs, codigo_composicao):
     df_historico = pd.DataFrame(columns=['CODIGO DA COMPOSICAO', 'CODIGO ITEM', 'COEFICIENTE', 'data'])
