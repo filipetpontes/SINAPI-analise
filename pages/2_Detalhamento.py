@@ -108,7 +108,9 @@ with st.spinner('Carregando...'):
                                 hide_index=True,
                                 column_config={
                                     "hist_coef": st.column_config.LineChartColumn(
-                                        "Histórico Coeficiente", y_min=0, y_max=1
+                                        "Histórico Coeficiente",
+                                        width="medium",
+                                        help='Variação do coeficiente no tempo'
                                     ),
                                 },
                                 )
